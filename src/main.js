@@ -2,6 +2,7 @@ import "./style.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { brandIcon } from "./brands.js";
+import { siFacebook, siInstagram, siTiktok, siYoutube, siX, siWhatsapp } from "simple-icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,7 +72,7 @@ function setupReveals() {
   });
 
   // Stagger groups (cards)
-  [".services", ".platforms", ".process", ".feature-list"].forEach((sel) => {
+  [".services", ".platforms", ".process", ".feature-list", ".bento", ".plans", ".faq"].forEach((sel) => {
     const parent = document.querySelector(sel);
     if (!parent || reducedMotion) return;
     ScrollTrigger.create({
@@ -241,6 +242,48 @@ function setupForm() {
     el.addEventListener("input", () => el.closest(".field").classList.remove("is-invalid"))
   );
 }
+
+/* ---------------- Testimonials: duplicate tracks for a seamless loop ---------------- */
+document.querySelectorAll(".reviews__track").forEach((track) => {
+  [...track.children].forEach((card) => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    track.appendChild(clone);
+  });
+});
+
+/* ---------------- Footer social icons ---------------- */
+const SOCIAL = { facebook: siFacebook, instagram: siInstagram, tiktok: siTiktok, youtube: siYoutube, x: siX, whatsapp: siWhatsapp };
+document.querySelectorAll("[data-social]").forEach((a) => {
+  const icon = SOCIAL[a.dataset.social];
+  if (icon) a.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icon.path}" fill="currentColor"/></svg>`;
+});
+
+/* ---------------- Package buttons preselect the service ---------------- */
+document.querySelectorAll("[data-plan]").forEach((btn) =>
+  btn.addEventListener("click", () => {
+    const select = document.getElementById("serviceSelect");
+    const opt = [...select.options].find((o) => o.text === btn.dataset.plan);
+    if (opt) select.value = opt.value || opt.text;
+  })
+);
+
+/* ---------------- Newsletter ---------------- */
+const newsletter = document.getElementById("newsletter");
+newsletter.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const status = document.getElementById("newsletterStatus");
+  const input = newsletter.querySelector("input");
+  if (!input.checkValidity() || !input.value) {
+    status.textContent = "Please enter a valid email address.";
+    return;
+  }
+  const subject = "Newsletter subscription";
+  const body = `Please add ${input.value} to the SkyITEmpire newsletter.`;
+  window.location.href = `mailto:hello@skyitempire.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  status.textContent = "Welcome to the Empire! 👑";
+  newsletter.reset();
+});
 
 document.getElementById("year").textContent = new Date().getFullYear();
 

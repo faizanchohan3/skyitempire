@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
@@ -131,11 +130,11 @@ function createAtmosphere(radius) {
         float d = -dot(vNormal, vView);
         float i = pow(clamp(d / 0.55, 0.0, 1.0), 3.0);
         vec3 col = mix(vec3(0.15, 0.55, 1.0), vec3(0.55, 0.3, 1.0), 0.3);
-        gl_FragColor = vec4(col * i * 0.9, i);
+        gl_FragColor = vec4(col, i * 0.55);
       }
     `,
     side: THREE.BackSide,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     transparent: true,
     depthWrite: false,
   });
@@ -169,14 +168,14 @@ function createRing(inner, outer) {
         float edge = smoothstep(0.0, 0.08, r) * smoothstep(1.0, 0.75, r);
         float gap = 1.0 - smoothstep(0.42, 0.44, r) * smoothstep(0.50, 0.48, r);
         float a = edge * gap * (0.12 + 0.55 * band) * fine;
-        vec3 col = mix(vec3(0.15, 0.8, 1.0), vec3(0.65, 0.35, 1.0), r);
-        gl_FragColor = vec4(col, a * 0.6);
+        vec3 col = mix(vec3(0.02, 0.45, 0.75), vec3(0.42, 0.15, 0.85), r);
+        gl_FragColor = vec4(col, a * 0.9);
       }
     `,
     side: THREE.DoubleSide,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
   });
   return new THREE.Mesh(new THREE.RingGeometry(inner, outer, 256, 1), material);
 }
@@ -185,8 +184,8 @@ function createDust(count, inner, outer) {
   const geo = new THREE.BufferGeometry();
   const pos = new Float32Array(count * 3);
   const col = new Float32Array(count * 3);
-  const a = new THREE.Color("#22d3ee");
-  const b = new THREE.Color("#a855f7");
+  const a = new THREE.Color("#0891b2");
+  const b = new THREE.Color("#7c3aed");
   const tmp = new THREE.Color();
   for (let i = 0; i < count; i++) {
     const r = inner + Math.pow(Math.random(), 0.7) * (outer - inner);
@@ -200,12 +199,11 @@ function createDust(count, inner, outer) {
   geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
   geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
   const mat = new THREE.PointsMaterial({
-    size: 0.025,
+    size: 0.028,
     vertexColors: true,
     transparent: true,
-    opacity: 0.9,
+    opacity: 0.75,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
   });
   return new THREE.Points(geo, mat);
 }
@@ -219,7 +217,7 @@ function createStars(count) {
   const size = new Float32Array(count);
   const seed = new Float32Array(count);
   const color = new Float32Array(count * 3);
-  const palette = ["#ffffff", "#cfe8ff", "#7dd3fc", "#c4b5fd", "#a5f3fc"].map((c) => new THREE.Color(c));
+  const palette = ["#2563eb", "#0891b2", "#7c3aed", "#60a5fa", "#a78bfa"].map((c) => new THREE.Color(c));
   for (let i = 0; i < count; i++) {
     const r = 18 + Math.random() * 50;
     const u = Math.random() * 2 - 1;
@@ -265,12 +263,11 @@ function createStars(count) {
         float d = length(c);
         float core = smoothstep(0.5, 0.0, d);
         float glow = pow(core, 3.0);
-        gl_FragColor = vec4(vColor * (glow * 1.2 + core * 0.25) * vTw, core * vTw);
+        gl_FragColor = vec4(vColor, glow * vTw * 0.55);
       }
     `,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
   });
   return { points: new THREE.Points(geo, mat), uniforms };
 }
@@ -293,7 +290,7 @@ function createOrbiters(labelsEnabled) {
     const color = new THREE.Color(p.color);
     const geometry = p.geo();
     const material = new THREE.MeshPhysicalMaterial({
-      color: color.clone().lerp(new THREE.Color("#ffffff"), 0.55),
+      color: color.clone().lerp(new THREE.Color("#ffffff"), 0.35),
       metalness: 0.05,
       roughness: 0.06,
       transmission: 1,
@@ -304,14 +301,14 @@ function createOrbiters(labelsEnabled) {
       clearcoat: 1,
       clearcoatRoughness: 0.05,
       attenuationColor: color,
-      attenuationDistance: 0.55,
-      envMapIntensity: 1.6,
+      attenuationDistance: 0.9,
+      envMapIntensity: 1.2,
     });
     const mesh = new THREE.Mesh(geometry, material);
 
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(geometry, 25),
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.85 })
+      new THREE.LineBasicMaterial({ color: color.clone().multiplyScalar(0.8), transparent: true, opacity: 0.9 })
     );
     edges.scale.setScalar(1.002);
     mesh.add(edges);
@@ -468,14 +465,14 @@ export function initScene(canvas, { onProgress } = {}) {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "high-performance" });
-  renderer.setClearColor("#05060f", 1);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
+  renderer.setClearColor("#f6f8fd", 1);
+  renderer.toneMapping = THREE.NoToneMapping;
+  renderer.toneMappingExposure = 1.0;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   onProgress?.(0.2);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2("#05060f", 0.012);
+  scene.fog = new THREE.FogExp2("#f6f8fd", 0.01);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -485,7 +482,7 @@ export function initScene(canvas, { onProgress } = {}) {
   camera.position.set(0, 0, 9);
 
   // Lights for the glass crystals
-  scene.add(new THREE.AmbientLight("#334", 0.6));
+  scene.add(new THREE.AmbientLight("#ffffff", 0.9));
   const key = new THREE.DirectionalLight("#ffffff", 2.4);
   key.position.set(5, 3, 6);
   scene.add(key);
@@ -510,7 +507,7 @@ export function initScene(canvas, { onProgress } = {}) {
 
   const shell = new THREE.LineSegments(
     new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.95, 2)),
-    new THREE.LineBasicMaterial({ color: "#3b82f6", transparent: true, opacity: 0.1, depthWrite: false })
+    new THREE.LineBasicMaterial({ color: "#2563eb", transparent: true, opacity: 0.14, depthWrite: false })
   );
   system.add(shell);
 
@@ -542,8 +539,6 @@ export function initScene(canvas, { onProgress } = {}) {
   // Post-processing
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.55, 0.5, 0.55);
-  composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
   function resize() {

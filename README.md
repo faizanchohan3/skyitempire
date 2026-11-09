@@ -1,6 +1,6 @@
 # SkyITEmpire Website
 
-Animated 3D website for **SkyITEmpire**, a software house offering:
+Animated 3D website (light theme) for **SkyITEmpire**, a software house offering:
 
 - **E-commerce Services**: Amazon, eBay, Etsy, Temu, TikTok Shop, Facebook Shop
 - **Digital Marketing**: performance ads, social media, SEO, email automation
@@ -34,5 +34,8 @@ Static site. On Vercel or Netlify, import the repo; the defaults work (build `np
 | Colours, fonts, layout | `src/style.css` (`:root` variables) |
 | 3D scene (planet, orbiters, bloom) | `src/scene.js` |
 | Where the planet sits per section | `data-planet="x,y,scale"` attributes on each `<section>` |
+| Testimonials (**sample text: replace with real reviews**) | `#testimonials` section in `index.html` |
+| Social media links (currently `#`) | `.socials` in the footer of `index.html` |
+| Packages / FAQ | `#packages` and `#faq` sections in `index.html` |
 
 The site respects `prefers-reduced-motion` and falls back to a gradient background when WebGL is unavailable.

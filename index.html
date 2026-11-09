@@ -8,7 +8,7 @@
       name="description"
       content="SkyITEmpire is a software house for e-commerce growth: Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook Shop management, digital marketing and custom web development."
     />
-    <meta name="theme-color" content="#05060f" />
+    <meta name="theme-color" content="#f6f8fd" />
     <meta property="og:title" content="SkyITEmpire | Build your empire in the digital sky" />
     <meta
       property="og:description"
@@ -36,19 +36,33 @@
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <defs>
         <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#22d3ee" />
-          <stop offset=".55" stop-color="#3b82f6" />
-          <stop offset="1" stop-color="#a855f7" />
+          <stop offset="0" stop-color="#06b6d4" />
+          <stop offset=".55" stop-color="#2563eb" />
+          <stop offset="1" stop-color="#9333ea" />
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fde68a" />
+          <stop offset=".5" stop-color="#f5b942" />
+          <stop offset="1" stop-color="#d48806" />
         </linearGradient>
         <symbol id="logo-mark" viewBox="0 0 64 64">
           <path d="M12 44 L16 22 L25 32 L32 16 L39 32 L48 22 L52 44 Z" fill="url(#brandGrad)" />
           <rect x="12" y="47" width="40" height="5" rx="2.5" fill="url(#brandGrad)" />
         </symbol>
+        <symbol id="logo-mark-gold" viewBox="0 0 64 64">
+          <path d="M12 44 L16 22 L25 32 L32 16 L39 32 L48 22 L52 44 Z" fill="url(#goldGrad)" />
+          <rect x="12" y="47" width="40" height="5" rx="2.5" fill="url(#goldGrad)" />
+        </symbol>
+        <symbol id="i-star" viewBox="0 0 24 24">
+          <path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6L2.5 9.4l6.6-.8z" fill="currentColor" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+          <path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
       </defs>
     </svg>
 
     <canvas id="webgl" aria-hidden="true"></canvas>
-    <div class="noise" aria-hidden="true"></div>
     <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
     <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
@@ -61,9 +75,9 @@
       <nav class="nav__links" id="navLinks" aria-label="Primary">
         <a href="#services">Services</a>
         <a href="#marketplaces">Marketplaces</a>
-        <a href="#marketing">Marketing</a>
-        <a href="#webdev">Web Dev</a>
-        <a href="#process">Process</a>
+        <a href="#packages">Packages</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact" class="btn btn--sm btn--primary magnetic">Get a Free Audit</a>
       </nav>
       <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
@@ -126,7 +140,7 @@
         </div>
 
         <div class="services">
-          <article class="service-card tilt reveal" data-accent="#22d3ee">
+          <article class="service-card tilt reveal" data-accent="#0891b2">
             <div class="service-card__glow"></div>
             <div class="service-card__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -146,7 +160,7 @@
             <a href="#marketplaces" class="link">See marketplaces →</a>
           </article>
 
-          <article class="service-card tilt reveal" data-accent="#a855f7">
+          <article class="service-card tilt reveal" data-accent="#9333ea">
             <div class="service-card__glow"></div>
             <div class="service-card__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -166,7 +180,7 @@
             <a href="#marketing" class="link">See marketing →</a>
           </article>
 
-          <article class="service-card tilt reveal" data-accent="#3b82f6">
+          <article class="service-card tilt reveal" data-accent="#2563eb">
             <div class="service-card__glow"></div>
             <div class="service-card__icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -235,7 +249,7 @@
             <div class="chips"><span>Onboarding</span><span>Catalogue</span><span>Pricing</span></div>
           </article>
 
-          <article class="platform tilt reveal" style="--c: #25f4ee">
+          <article class="platform tilt reveal" style="--c: #00c2c7">
             <div class="platform__top">
               <span class="platform__badge" data-brand="tiktok"></span>
               <h3>TikTok Shop</h3>
@@ -290,15 +304,15 @@
               <span>Campaign Overview</span>
             </div>
             <div class="dash__kpis">
-              <div><small>Reach</small><strong class="kpi-anim">Growing</strong></div>
-              <div><small>CTR</small><strong class="kpi-anim">Optimised</strong></div>
-              <div><small>ROAS</small><strong class="kpi-anim">Tracked</strong></div>
+              <div><small>Reach</small><strong>Growing</strong></div>
+              <div><small>CTR</small><strong>Optimised</strong></div>
+              <div><small>ROAS</small><strong>Tracked</strong></div>
             </div>
             <svg class="dash__chart" viewBox="0 0 400 160" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#22d3ee" stop-opacity=".45" />
-                  <stop offset="1" stop-color="#22d3ee" stop-opacity="0" />
+                  <stop offset="0" stop-color="#2563eb" stop-opacity=".28" />
+                  <stop offset="1" stop-color="#2563eb" stop-opacity="0" />
                 </linearGradient>
               </defs>
               <path class="chart-area" d="M0 140 C40 130 60 120 90 110 S150 95 180 80 S240 70 270 50 S340 30 400 12 L400 160 L0 160 Z" fill="url(#chartFill)" />
@@ -317,7 +331,7 @@
       <!-- WEB DEV -->
       <section class="section split split--reverse" id="webdev" data-planet="-2.7,0,0.85" data-planet-m="0,1.6,0.6">
         <div class="split__visual reveal">
-          <div class="code glass">
+          <div class="code">
             <div class="dash__head">
               <span class="dash__dots"><i></i><i></i><i></i></span>
               <span>skyitempire.dev</span>
@@ -349,8 +363,46 @@
         </div>
       </section>
 
+      <!-- WHY US (bento) -->
+      <section class="section" id="why-us" data-planet="3.2,1.2,0.6" data-planet-m="0,-1.2,0.55">
+        <div class="section__head">
+          <p class="eyebrow reveal"><span class="dot"></span> Why SkyITEmpire</p>
+          <h2 class="section__title reveal">A growth partner, <span class="grad">not just an agency.</span></h2>
+          <p class="section__lead reveal">
+            One team for your marketplaces, marketing and website, so every part of your business works together.
+          </p>
+        </div>
+        <div class="bento">
+          <article class="bento__item bento__item--wide reveal">
+            <span class="bento__icon">👑</span>
+            <h3>Dedicated account manager</h3>
+            <p>One point of contact who knows your brand, your numbers and your goals, available whenever you need them.</p>
+          </article>
+          <article class="bento__item reveal">
+            <span class="bento__icon">📊</span>
+            <h3>Transparent reporting</h3>
+            <p>Clear weekly and monthly reports on sales, ad spend and growth.</p>
+          </article>
+          <article class="bento__item reveal">
+            <span class="bento__icon">⚡</span>
+            <h3>Fast turnaround</h3>
+            <p>Quick launches, quick fixes and quick answers.</p>
+          </article>
+          <article class="bento__item reveal">
+            <span class="bento__icon">🛡️</span>
+            <h3>Policy-safe growth</h3>
+            <p>We follow each marketplace's rules to keep your accounts healthy.</p>
+          </article>
+          <article class="bento__item bento__item--accent reveal">
+            <span class="bento__icon">🚀</span>
+            <h3>All-in-one team</h3>
+            <p>Marketplace experts, marketers, designers and developers under one roof, so nothing gets lost between agencies.</p>
+          </article>
+        </div>
+      </section>
+
       <!-- PROCESS -->
-      <section class="section" id="process" data-planet="0,1.9,0.6" data-planet-m="0,0,0.6">
+      <section class="section" id="process" data-planet="-3.6,1.4,0.55" data-planet-m="0,0,0.6">
         <div class="section__head">
           <p class="eyebrow reveal"><span class="dot"></span> How we work</p>
           <h2 class="section__title reveal">From idea to <span class="grad">empire</span> in four steps.</h2>
@@ -379,7 +431,7 @@
         </ol>
       </section>
 
-      <!-- WHY US -->
+      <!-- STATS -->
       <section class="section" id="why">
         <div class="why glass reveal">
           <div class="why__item">
@@ -398,6 +450,157 @@
             <strong><span class="counter" data-to="100">0</span>%</strong>
             <span>Transparent reporting</span>
           </div>
+        </div>
+      </section>
+
+      <!-- PACKAGES -->
+      <section class="section" id="packages" data-planet="-3.8,-0.6,0.6" data-planet-m="0,1.4,0.55">
+        <div class="section__head section__head--center">
+          <p class="eyebrow reveal"><span class="dot"></span> Packages</p>
+          <h2 class="section__title reveal">Choose your <span class="grad">growth plan.</span></h2>
+          <p class="section__lead reveal">
+            Every business is different, so every plan is tailored. Pick a starting point and we'll send a custom quote.
+          </p>
+        </div>
+        <div class="plans">
+          <article class="plan tilt reveal">
+            <h3>Starter</h3>
+            <p class="plan__desc">For new sellers launching their first store.</p>
+            <p class="plan__price">Custom quote</p>
+            <ul>
+              <li><svg><use href="#i-check" /></svg>1 marketplace setup</li>
+              <li><svg><use href="#i-check" /></svg>Up to 20 optimised listings</li>
+              <li><svg><use href="#i-check" /></svg>Basic PPC setup</li>
+              <li><svg><use href="#i-check" /></svg>Monthly report</li>
+              <li><svg><use href="#i-check" /></svg>Email support</li>
+            </ul>
+            <a href="#contact" class="btn btn--ghost btn--block magnetic" data-plan="Starter Package">Get a quote</a>
+          </article>
+
+          <article class="plan plan--popular tilt reveal">
+            <span class="plan__tag">Most popular</span>
+            <h3>Growth</h3>
+            <p class="plan__desc">For brands ready to scale across channels.</p>
+            <p class="plan__price">Custom quote</p>
+            <ul>
+              <li><svg><use href="#i-check" /></svg>Up to 3 marketplaces</li>
+              <li><svg><use href="#i-check" /></svg>Full account management</li>
+              <li><svg><use href="#i-check" /></svg>PPC &amp; social ads management</li>
+              <li><svg><use href="#i-check" /></svg>Social media content</li>
+              <li><svg><use href="#i-check" /></svg>Weekly reports &amp; calls</li>
+            </ul>
+            <a href="#contact" class="btn btn--primary btn--block magnetic" data-plan="Growth Package">Get a quote</a>
+          </article>
+
+          <article class="plan plan--vip tilt reveal">
+            <span class="plan__tag plan__tag--gold">VIP</span>
+            <h3>Empire</h3>
+            <p class="plan__desc">The complete done-for-you growth team.</p>
+            <p class="plan__price">Custom quote</p>
+            <ul>
+              <li><svg><use href="#i-check" /></svg>All 6 marketplaces</li>
+              <li><svg><use href="#i-check" /></svg>Full digital marketing</li>
+              <li><svg><use href="#i-check" /></svg>Custom website or store</li>
+              <li><svg><use href="#i-check" /></svg>Dedicated account manager</li>
+              <li><svg><use href="#i-check" /></svg>Priority 24/7 support</li>
+            </ul>
+            <a href="#contact" class="btn btn--gold btn--block magnetic" data-plan="Empire VIP Package">Get a quote</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS
+           These are SAMPLE testimonials. Replace the names, roles and text with
+           real client reviews (with their permission) before going live. -->
+      <section class="section section--full" id="testimonials" data-planet="-4.6,-2.8,0.5" data-planet-m="0,-1.6,0.55">
+        <div class="section__head section__head--center">
+          <p class="eyebrow reveal"><span class="dot"></span> Testimonials</p>
+          <h2 class="section__title reveal">What our <span class="grad">clients say.</span></h2>
+        </div>
+        <div class="reviews" id="reviews">
+          <div class="reviews__row">
+            <div class="reviews__track">
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"They took over our Amazon account and fixed listings we'd struggled with for months. Communication is fast and the reports are clear."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>Amazon FBA Seller</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"Our Etsy shop finally looks professional. New branding, better listings and the ads are actually profitable now."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>Etsy Shop Owner</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"The website they built for us is fast and beautiful. Customers keep complimenting it."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>Business Owner</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"They set up our TikTok Shop and creator programme from scratch. A very professional team."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>TikTok Shop Seller</small></span></figcaption>
+              </figure>
+            </div>
+          </div>
+          <div class="reviews__row reviews__row--reverse">
+            <div class="reviews__track">
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"Clear strategy, honest advice and a team that actually cares about our results. Highly recommended."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>eBay Seller</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"Our Facebook and Instagram shop campaigns are finally organised and tracked properly."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>Fashion Brand</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"Temu onboarding was confusing for us. SkyITEmpire handled everything and kept us updated at each step."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>Temu Seller</small></span></figcaption>
+              </figure>
+              <figure class="review">
+                <div class="review__stars"><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg><svg><use href="#i-star" /></svg></div>
+                <blockquote>"One team for our store, ads and website. It saves us so much time."</blockquote>
+                <figcaption><span class="review__avatar">CN</span><span><strong>Client Name</strong><small>E-commerce Brand</small></span></figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section faq-wrap" id="faq" data-planet="3.3,0,0.75" data-planet-m="0,1.6,0.55">
+        <div class="faq-wrap__head">
+          <p class="eyebrow reveal"><span class="dot"></span> FAQ</p>
+          <h2 class="section__title reveal">Questions? <span class="grad">Answered.</span></h2>
+          <p class="section__lead reveal">Can't find what you're looking for? <a href="#contact" class="text-link">Message us</a> and we'll reply within 24 hours.</p>
+        </div>
+        <div class="faq">
+          <details class="faq__item reveal" open>
+            <summary>Which marketplaces do you manage?</summary>
+            <p>We manage Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook/Instagram Shops, from account setup and listings to ads, orders and account health.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>Do you work with new sellers?</summary>
+            <p>Yes. We help brand-new sellers with product research, store setup and launch, and we also scale established brands.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>How much do your services cost?</summary>
+            <p>Pricing depends on the channels, number of products and services you need. Tell us about your business and we'll send a tailored quote after a free audit.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>How soon will I see results?</summary>
+            <p>Setup and optimisation usually take the first few weeks. Growth timelines depend on your product, competition and budget, and we share realistic goals from day one.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>Can you build a website and run marketing too?</summary>
+            <p>Absolutely. We design and develop websites and online stores and run digital marketing, so your marketplaces, website and ads all work together.</p>
+          </details>
+          <details class="faq__item reveal">
+            <summary>How do you report progress?</summary>
+            <p>You get regular reports on sales, ad spend and key metrics, plus calls with your account manager to plan the next steps.</p>
+          </details>
         </div>
       </section>
 
@@ -428,7 +631,7 @@
               </label>
             </div>
             <label class="field">
-              <select name="service" required>
+              <select name="service" id="serviceSelect" required>
                 <option value="" disabled selected hidden></option>
                 <option>Amazon Management</option>
                 <option>eBay Management</option>
@@ -438,6 +641,9 @@
                 <option>Facebook Shop Management</option>
                 <option>Digital Marketing</option>
                 <option>Web Development</option>
+                <option>Starter Package</option>
+                <option>Growth Package</option>
+                <option>Empire VIP Package</option>
                 <option>Not sure yet: advise me</option>
               </select>
               <span>Service you need</span>
@@ -455,24 +661,79 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="footer__inner">
-        <a href="#top" class="brand">
-          <svg class="brand__mark" viewBox="0 0 64 64"><use href="#logo-mark" /></svg>
-          <span class="brand__name">Sky<span class="grad">IT</span>Empire</span>
-        </a>
-        <nav class="footer__links" aria-label="Footer">
-          <a href="#services">Services</a>
-          <a href="#marketplaces">Marketplaces</a>
-          <a href="#marketing">Marketing</a>
-          <a href="#webdev">Web Development</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <p class="footer__copy">© <span id="year"></span> SkyITEmpire. All rights reserved.</p>
+    <!-- VIP FOOTER -->
+    <footer class="vip-footer" id="footer">
+      <div class="vip-footer__glow" aria-hidden="true"></div>
+
+      <div class="vip-footer__cta">
+        <div>
+          <p class="vip-footer__kicker"><svg viewBox="0 0 64 64"><use href="#logo-mark-gold" /></svg> VIP Partnership</p>
+          <h2>Let's build something <span class="gold">legendary.</span></h2>
+        </div>
+        <a href="#contact" class="btn btn--gold btn--lg magnetic">Book a Free Strategy Call <span class="arrow">→</span></a>
       </div>
-      <p class="footer__note">
-        Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook Shop are trademarks of their respective owners.
-      </p>
+
+      <div class="vip-footer__grid">
+        <div class="vip-footer__brand">
+          <a href="#top" class="brand">
+            <svg class="brand__mark" viewBox="0 0 64 64"><use href="#logo-mark-gold" /></svg>
+            <span class="brand__name">Sky<span class="gold">IT</span>Empire</span>
+          </a>
+          <p>
+            Your all-in-one software house for marketplace management, digital marketing and web
+            development. Built to help ambitious brands rule their market.
+          </p>
+          <!-- Replace "#" with your real social profile links -->
+          <div class="socials" id="socials">
+            <a href="#" aria-label="Facebook" data-social="facebook"></a>
+            <a href="#" aria-label="Instagram" data-social="instagram"></a>
+            <a href="#" aria-label="TikTok" data-social="tiktok"></a>
+            <a href="#" aria-label="YouTube" data-social="youtube"></a>
+            <a href="#" aria-label="X" data-social="x"></a>
+            <a href="#" aria-label="WhatsApp" data-social="whatsapp"></a>
+          </div>
+        </div>
+
+        <nav class="vip-footer__col" aria-label="Services">
+          <h4>Services</h4>
+          <a href="#services">E-commerce Services</a>
+          <a href="#marketing">Digital Marketing</a>
+          <a href="#webdev">Web Development</a>
+          <a href="#packages">Packages</a>
+        </nav>
+
+        <nav class="vip-footer__col" aria-label="Marketplaces">
+          <h4>Marketplaces</h4>
+          <a href="#marketplaces">Amazon</a>
+          <a href="#marketplaces">eBay</a>
+          <a href="#marketplaces">Etsy</a>
+          <a href="#marketplaces">Temu</a>
+          <a href="#marketplaces">TikTok Shop</a>
+          <a href="#marketplaces">Facebook Shop</a>
+        </nav>
+
+        <div class="vip-footer__col vip-footer__news">
+          <h4>Join the Empire</h4>
+          <p>Growth tips, marketplace updates and offers, straight to your inbox.</p>
+          <form class="newsletter" id="newsletter" novalidate>
+            <input type="email" name="email" placeholder="Your email address" aria-label="Email address" required />
+            <button type="submit" aria-label="Subscribe">→</button>
+          </form>
+          <p class="newsletter__status" id="newsletterStatus" role="status"></p>
+          <ul class="vip-footer__contact">
+            <li><span>✉</span><a href="mailto:hello@skyitempire.com">hello@skyitempire.com</a></li>
+            <li><span>⌖</span>Serving clients worldwide</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="vip-footer__wordmark" aria-hidden="true">SKYITEMPIRE</div>
+
+      <div class="vip-footer__bottom">
+        <p>© <span id="year"></span> SkyITEmpire. All rights reserved.</p>
+        <p class="vip-footer__tm">Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook Shop are trademarks of their respective owners.</p>
+        <a href="#top" class="to-top" aria-label="Back to top">↑</a>
+      </div>
     </footer>
 
     <script type="module" src="/src/main.js"></script>
