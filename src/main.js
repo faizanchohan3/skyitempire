@@ -117,6 +117,8 @@ function setupReveals() {
   // Counters
   gsap.utils.toArray(".counter").forEach((el) => {
     const to = Number(el.dataset.to);
+    const decimals = Number(el.dataset.decimals || 0);
+    const fmt = (v) => (decimals ? v.toFixed(decimals) : Math.round(v).toLocaleString("en-US"));
     const obj = { v: 0 };
     ScrollTrigger.create({
       trigger: el,
@@ -127,7 +129,7 @@ function setupReveals() {
           v: to,
           duration: reducedMotion ? 0 : 2,
           ease: "power3.out",
-          onUpdate: () => (el.textContent = Math.round(obj.v)),
+          onUpdate: () => (el.textContent = fmt(obj.v)),
         }),
     });
   });

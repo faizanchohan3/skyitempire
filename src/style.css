@@ -2255,3 +2255,67 @@ main,
 .contact > * {
   min-width: 0;
 }
+
+/* ---------- Dashboard values ---------- */
+.dash__kpis strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.dash__kpis em {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.dash__kpis em.up {
+  color: #047857;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.dash__kpis--sub {
+  margin-top: 12px;
+}
+
+.dash__kpis--sub div {
+  background: rgba(37, 99, 235, 0.04);
+}
+
+.dash__kpis--sub strong {
+  font-size: 18px;
+}
+
+.dash__chart-legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.dash__chart-legend b {
+  font-family: var(--font-head);
+  font-size: 15px;
+  color: #047857;
+}
+
+@media (max-width: 680px) {
+  .dash__kpis strong {
+    font-size: 19px;
+  }
+
+  .dash__kpis--sub strong {
+    font-size: 15px;
+  }
+
+  .dash__kpis div {
+    padding: 10px;
+  }
+}
