@@ -343,6 +343,117 @@ function createOrbiters(labelsEnabled) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Brand emblem on the globe                                            */
+/* ------------------------------------------------------------------ */
+function drawEmblem(ctx, size) {
+  const c = size / 2;
+  ctx.clearRect(0, 0, size, size);
+
+  // soft dark disc so the logo reads clearly over the planet surface
+  const disc = ctx.createRadialGradient(c, c, 0, c, c, c);
+  disc.addColorStop(0, "rgba(4, 8, 28, 0.78)");
+  disc.addColorStop(0.62, "rgba(4, 8, 28, 0.5)");
+  disc.addColorStop(1, "rgba(4, 8, 28, 0)");
+  ctx.fillStyle = disc;
+  ctx.fillRect(0, 0, size, size);
+
+  // glowing outer ring
+  ctx.lineWidth = size * 0.008;
+  ctx.strokeStyle = "rgba(34, 211, 238, 0.85)";
+  ctx.shadowColor = "#22d3ee";
+  ctx.shadowBlur = size * 0.03;
+  ctx.beginPath();
+  ctx.arc(c, c, size * 0.36, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.lineWidth = size * 0.003;
+  ctx.strokeStyle = "rgba(168, 85, 247, 0.7)";
+  ctx.beginPath();
+  ctx.arc(c, c, size * 0.39, 0, Math.PI * 2);
+  ctx.stroke();
+
+  const grad = ctx.createLinearGradient(c - size * 0.2, c - size * 0.2, c + size * 0.2, c + size * 0.2);
+  grad.addColorStop(0, "#22d3ee");
+  grad.addColorStop(0.55, "#3b82f6");
+  grad.addColorStop(1, "#a855f7");
+
+  // crown mark (same shape as the site logo, 64-unit viewBox)
+  const k = size * 0.0062;
+  const ox = c - 32 * k;
+  const oy = c - size * 0.2 - 16 * k;
+  ctx.save();
+  ctx.translate(ox, oy);
+  ctx.scale(k, k);
+  ctx.fillStyle = grad;
+  ctx.shadowColor = "#3b82f6";
+  ctx.shadowBlur = 18;
+  ctx.beginPath();
+  ctx.moveTo(12, 44);
+  ctx.lineTo(16, 22);
+  ctx.lineTo(25, 32);
+  ctx.lineTo(32, 16);
+  ctx.lineTo(39, 32);
+  ctx.lineTo(48, 22);
+  ctx.lineTo(52, 44);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.roundRect(12, 47, 40, 5, 2.5);
+  ctx.fill();
+  ctx.restore();
+
+  // wordmark
+  ctx.shadowColor = "rgba(59, 130, 246, 0.9)";
+  ctx.shadowBlur = size * 0.02;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.font = `700 ${size * 0.085}px "Space Grotesk", system-ui, sans-serif`;
+  const y = c + size * 0.1;
+  const parts = [["Sky", "#ffffff"], ["IT", grad], ["Empire", "#ffffff"]];
+  const widths = parts.map(([t]) => ctx.measureText(t).width);
+  let x = c - widths.reduce((a, b) => a + b, 0) / 2;
+  ctx.textAlign = "left";
+  parts.forEach(([t, fill], i) => {
+    ctx.fillStyle = fill;
+    ctx.fillText(t, x, y);
+    x += widths[i];
+  });
+
+  ctx.shadowBlur = 0;
+  ctx.textAlign = "center";
+  ctx.font = `500 ${size * 0.03}px "Inter", system-ui, sans-serif`;
+  ctx.fillStyle = "rgba(200, 215, 255, 0.85)";
+  ctx.fillText("S O F T W A R E   H O U S E", c, c + size * 0.19);
+}
+
+function createEmblem() {
+  const size = 1024;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  drawEmblem(ctx, size);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+
+  // redraw once the web fonts are ready so the wordmark uses Space Grotesk
+  document.fonts?.ready.then(() => {
+    drawEmblem(ctx, size);
+    texture.needsUpdate = true;
+  });
+
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    transparent: true,
+    depthWrite: false,
+    toneMapped: false,
+  });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 2.3), material);
+  mesh.renderOrder = 2;
+  return mesh;
+}
+
+/* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 const smooth = (t) => t * t * (3 - 2 * t);
@@ -408,6 +519,11 @@ export function initScene(canvas, { onProgress } = {}) {
   const dust = createDust(isMobile() ? 1800 : 4200, 3.25, 4.5);
   ringGroup.add(dust);
   system.add(ringGroup);
+
+  // Brand logo sitting in the circle on the front of the globe
+  const emblem = createEmblem();
+  emblem.position.set(0, 0, 1.45);
+  world.add(emblem);
 
   const orbiters = createOrbiters(true);
   world.add(orbiters.group);
@@ -555,6 +671,10 @@ export function initScene(canvas, { onProgress } = {}) {
     camera.position.x = mouseSmooth.x * 0.45;
     camera.position.y = -mouseSmooth.y * 0.3;
     camera.lookAt(0, 0, 0);
+
+    // Keep the logo facing the viewer with a gentle float
+    emblem.quaternion.copy(camera.quaternion);
+    emblem.position.y = Math.sin(t * 0.8) * 0.04;
 
     composer.render();
     if (labelOpacity > 0.01) labelRenderer.render(scene, camera);
