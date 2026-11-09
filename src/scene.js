@@ -6,6 +6,7 @@ import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import { brandIcon } from "./brands.js";
 
 /* ------------------------------------------------------------------ */
 /* Shared GLSL                                                          */
@@ -278,12 +279,12 @@ function createStars(count) {
 /* Orbiting marketplace crystals                                         */
 /* ------------------------------------------------------------------ */
 const PLATFORMS = [
-  { name: "Amazon", color: "#ff9900", geo: () => new RoundedBoxGeometry(0.42, 0.42, 0.42, 4, 0.06) },
-  { name: "eBay", color: "#3665f3", geo: () => new THREE.IcosahedronGeometry(0.28, 0) },
-  { name: "Etsy", color: "#f1641e", geo: () => new THREE.OctahedronGeometry(0.3, 0) },
-  { name: "Temu", color: "#fb7701", geo: () => new THREE.DodecahedronGeometry(0.27, 0) },
-  { name: "TikTok Shop", color: "#25f4ee", geo: () => new THREE.TorusGeometry(0.2, 0.08, 24, 64) },
-  { name: "Facebook Shop", color: "#1877f2", geo: () => new THREE.CapsuleGeometry(0.13, 0.26, 8, 24) },
+  { key: "amazon", name: "Amazon", color: "#ff9900", geo: () => new RoundedBoxGeometry(0.42, 0.42, 0.42, 4, 0.06) },
+  { key: "ebay", name: "eBay", color: "#3665f3", geo: () => new THREE.IcosahedronGeometry(0.28, 0) },
+  { key: "etsy", name: "Etsy", color: "#f1641e", geo: () => new THREE.OctahedronGeometry(0.3, 0) },
+  { key: "temu", name: "Temu", color: "#fb7701", geo: () => new THREE.DodecahedronGeometry(0.27, 0) },
+  { key: "tiktok", name: "TikTok Shop", color: "#25f4ee", geo: () => new THREE.TorusGeometry(0.2, 0.08, 24, 64) },
+  { key: "facebook", name: "Facebook Shop", color: "#1877f2", geo: () => new THREE.CapsuleGeometry(0.13, 0.26, 8, 24) },
 ];
 
 function createOrbiters(labelsEnabled) {
@@ -322,7 +323,8 @@ function createOrbiters(labelsEnabled) {
       const el = document.createElement("div");
       el.className = "orb-label";
       el.style.setProperty("--c", p.color);
-      el.textContent = p.name;
+      el.appendChild(brandIcon(p.key, "orb-label__icon"));
+      el.append(p.name);
       const label = new CSS2DObject(el);
       label.position.set(0, 0.42, 0);
       label.center.set(0.5, 1);

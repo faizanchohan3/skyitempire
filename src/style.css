@@ -1510,3 +1510,63 @@ main,
     padding-top: 44svh;
   }
 }
+
+/* ---------- Brand logos ---------- */
+.brand-icon,
+.orb-label__icon {
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.brand-icon svg,
+.brand-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.brand-icon b,
+.orb-label__icon b {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.orb-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 6px;
+}
+
+.orb-label__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 12px -2px var(--c);
+}
+
+.orb-label__icon svg,
+.orb-label__icon img {
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
+}
+
+.orb-label__icon b {
+  font-size: 13px;
+}
+
+/* eBay's mark is a wide wordmark: give it more room */
+.brand-icon[data-brand="ebay"] svg {
+  width: 40px;
+  height: 40px;
+}
+
+.orb-label__icon[data-brand="ebay"] svg {
+  width: 19px;
+  height: 19px;
+}

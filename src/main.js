@@ -1,6 +1,7 @@
 import "./style.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { brandIcon } from "./brands.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -202,6 +203,11 @@ function setupPointer() {
     });
   });
 }
+
+/* ---------------- Marketplace logos ---------------- */
+document.querySelectorAll(".platform__badge[data-brand]").forEach((el) => {
+  el.appendChild(brandIcon(el.dataset.brand));
+});
 
 /* ---------------- Accent colours ---------------- */
 document.querySelectorAll("[data-accent]").forEach((el) => el.style.setProperty("--accent", el.dataset.accent));
