@@ -362,7 +362,7 @@ function createOrbiters(labelsEnabled) {
 /* ------------------------------------------------------------------ */
 /* Brand emblem on the globe                                            */
 /* ------------------------------------------------------------------ */
-function drawEmblem(ctx, size) {
+function drawEmblem(ctx, size, site = {}, logoImg = null) {
   const c = size / 2;
   ctx.clearRect(0, 0, size, size);
 
@@ -393,30 +393,43 @@ function drawEmblem(ctx, size) {
   grad.addColorStop(0.55, "#3b82f6");
   grad.addColorStop(1, "#a855f7");
 
-  // crown mark (same shape as the site logo, 64-unit viewBox)
-  const k = size * 0.0062;
-  const ox = c - 32 * k;
-  const oy = c - size * 0.2 - 16 * k;
-  ctx.save();
-  ctx.translate(ox, oy);
-  ctx.scale(k, k);
-  ctx.fillStyle = grad;
-  ctx.shadowColor = "#3b82f6";
-  ctx.shadowBlur = 18;
-  ctx.beginPath();
-  ctx.moveTo(12, 44);
-  ctx.lineTo(16, 22);
-  ctx.lineTo(25, 32);
-  ctx.lineTo(32, 16);
-  ctx.lineTo(39, 32);
-  ctx.lineTo(48, 22);
-  ctx.lineTo(52, 44);
-  ctx.closePath();
-  ctx.fill();
-  ctx.beginPath();
-  ctx.roundRect(12, 47, 40, 5, 2.5);
-  ctx.fill();
-  ctx.restore();
+  if (logoImg) {
+    // uploaded logo, fitted into the top half of the circle
+    const box = size * 0.26;
+    const r = Math.min(box / logoImg.width, box / logoImg.height);
+    const w = logoImg.width * r;
+    const h = logoImg.height * r;
+    ctx.save();
+    ctx.shadowColor = "rgba(59, 130, 246, 0.8)";
+    ctx.shadowBlur = size * 0.02;
+    ctx.drawImage(logoImg, c - w / 2, c - size * 0.07 - h, w, h);
+    ctx.restore();
+  } else {
+    // crown mark (same shape as the site logo, 64-unit viewBox)
+    const k = size * 0.0062;
+    const ox = c - 32 * k;
+    const oy = c - size * 0.2 - 16 * k;
+    ctx.save();
+    ctx.translate(ox, oy);
+    ctx.scale(k, k);
+    ctx.fillStyle = grad;
+    ctx.shadowColor = "#3b82f6";
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.moveTo(12, 44);
+    ctx.lineTo(16, 22);
+    ctx.lineTo(25, 32);
+    ctx.lineTo(32, 16);
+    ctx.lineTo(39, 32);
+    ctx.lineTo(48, 22);
+    ctx.lineTo(52, 44);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.roundRect(12, 47, 40, 5, 2.5);
+    ctx.fill();
+    ctx.restore();
+  }
 
   // wordmark
   ctx.shadowColor = "rgba(59, 130, 246, 0.9)";
@@ -425,7 +438,11 @@ function drawEmblem(ctx, size) {
   ctx.textBaseline = "middle";
   ctx.font = `700 ${size * 0.085}px "Space Grotesk", system-ui, sans-serif`;
   const y = c + size * 0.1;
-  const parts = [["Sky", "#ffffff"], ["IT", grad], ["Empire", "#ffffff"]];
+  const parts = [
+    [site.brandPrefix ?? "Sky", "#ffffff"],
+    [site.brandHighlight ?? "IT", grad],
+    [site.brandSuffix ?? "Empire", "#ffffff"],
+  ];
   const widths = parts.map(([t]) => ctx.measureText(t).width);
   let x = c - widths.reduce((a, b) => a + b, 0) / 2;
   ctx.textAlign = "left";
@@ -439,15 +456,16 @@ function drawEmblem(ctx, size) {
   ctx.textAlign = "center";
   ctx.font = `500 ${size * 0.03}px "Inter", system-ui, sans-serif`;
   ctx.fillStyle = "rgba(200, 215, 255, 0.85)";
-  ctx.fillText("S O F T W A R E   H O U S E", c, c + size * 0.19);
+  ctx.fillText(String(site.emblemTagline ?? "SOFTWARE HOUSE").toUpperCase().split("").join(" "), c, c + size * 0.19);
 }
 
-function createEmblem() {
+function createEmblem(site = {}) {
   const size = 1024;
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext("2d");
-  drawEmblem(ctx, size);
+  let logoImg = null;
+  drawEmblem(ctx, size, site);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -455,9 +473,21 @@ function createEmblem() {
 
   // redraw once the web fonts are ready so the wordmark uses Space Grotesk
   document.fonts?.ready.then(() => {
-    drawEmblem(ctx, size);
+    drawEmblem(ctx, size, site, logoImg);
     texture.needsUpdate = true;
   });
+
+  // optional uploaded logo
+  if (site.logo) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      logoImg = img;
+      drawEmblem(ctx, size, site, logoImg);
+      texture.needsUpdate = true;
+    };
+    img.src = site.logo;
+  }
 
   const material = new THREE.MeshBasicMaterial({
     map: texture,
@@ -478,7 +508,7 @@ const smooth = (t) => t * t * (3 - 2 * t);
 /* ------------------------------------------------------------------ */
 /* Main                                                                 */
 /* ------------------------------------------------------------------ */
-export function initScene(canvas, { onProgress } = {}) {
+export function initScene(canvas, { onProgress, site = {} } = {}) {
   const isMobile = () => window.innerWidth < 860;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -540,7 +570,7 @@ export function initScene(canvas, { onProgress } = {}) {
   system.add(ringGroup);
 
   // Brand logo sitting in the circle on the front of the globe
-  const emblem = createEmblem();
+  const emblem = createEmblem(site);
   emblem.position.set(0, 0, 1.45);
   world.add(emblem);
 

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin | SkyITEmpire</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Login -->
+    <section class="login" id="loginView" hidden>
+      <form class="login__card" id="loginForm">
+        <img src="/favicon.svg" alt="" class="login__logo" />
+        <h1>Admin Dashboard</h1>
+        <p class="muted">Sign in to edit your website.</p>
+        <label>Email<input type="email" name="email" required autocomplete="username" /></label>
+        <label>Password<input type="password" name="password" required autocomplete="current-password" /></label>
+        <button type="submit" class="a-btn a-btn--primary a-btn--block">Sign in</button>
+        <p class="login__error" id="loginError" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- App -->
+    <div class="app" id="appView" hidden>
+      <header class="topbar">
+        <div class="topbar__brand">
+          <img src="/favicon.svg" alt="" />
+          <strong>SkyITEmpire</strong><span class="muted">Admin</span>
+        </div>
+        <div class="topbar__status" id="status"></div>
+        <div class="topbar__actions">
+          <button class="a-btn" id="btnPreviewToggle" title="Show or hide the live preview">👁 Preview</button>
+          <a class="a-btn" href="/" target="_blank" rel="noopener">↗ View site</a>
+          <div class="menu">
+            <button class="a-btn" id="btnMore" aria-haspopup="true">⋯ More</button>
+            <div class="menu__list" id="moreMenu" hidden>
+              <button id="btnExport">⬇ Export content (JSON)</button>
+              <label class="menu__file">⬆ Import content (JSON)<input type="file" id="importFile" accept="application/json" hidden /></label>
+              <button id="btnReset">↺ Reset everything to defaults</button>
+              <button id="btnLogout">⎋ Sign out</button>
+            </div>
+          </div>
+          <button class="a-btn a-btn--primary" id="btnSave">💾 Save &amp; publish</button>
+        </div>
+      </header>
+
+      <div class="banner" id="banner" hidden></div>
+
+      <div class="workspace">
+        <aside class="sidebar">
+          <p class="sidebar__title">Settings</p>
+          <button class="nav-item" data-target="site">⚙️ <span>Site &amp; brand</span></button>
+          <button class="nav-item" data-target="footer">🏛️ <span>VIP footer</span></button>
+
+          <div class="sidebar__row">
+            <p class="sidebar__title">Sections <span class="muted">(drag to reorder)</span></p>
+          </div>
+          <ul class="sections" id="sectionList"></ul>
+
+          <div class="add-section">
+            <select id="addType" aria-label="Section type to add"></select>
+            <button class="a-btn a-btn--block" id="btnAdd">＋ Add section</button>
+          </div>
+        </aside>
+
+        <main class="editor" id="editor"></main>
+
+        <section class="preview" id="previewPane">
+          <div class="preview__bar">
+            <button class="seg is-active" data-device="desktop">🖥 Desktop</button>
+            <button class="seg" data-device="mobile">📱 Mobile</button>
+            <button class="seg" id="btnReload" title="Reload preview">⟳</button>
+          </div>
+          <div class="preview__frame" id="previewFrameWrap">
+            <iframe id="previewFrame" title="Live preview" src="/?preview=1"></iframe>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script type="module" src="/src/admin/admin.js"></script>
+  </body>
+</html>

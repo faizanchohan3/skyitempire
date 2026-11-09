@@ -2481,3 +2481,33 @@ main,
     margin-left: auto;
   }
 }
+
+/* ---------- Uploaded images (admin panel) ---------- */
+.brand__logo {
+  width: auto;
+  height: 36px;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+.platform__img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.split__image {
+  width: 100%;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  object-fit: cover;
+}
+
+.review__avatar--img {
+  object-fit: cover;
+}
+
+.section--stats {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}

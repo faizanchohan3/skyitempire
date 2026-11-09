@@ -2,6 +2,8 @@ import "./style.css";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { brandIcon } from "./brands.js";
+import { loadContent, PREVIEW_KEY } from "./content/load.js";
+import { renderSite } from "./render.js";
 import { siFacebook, siInstagram, siTiktok, siYoutube, siX, siWhatsapp } from "simple-icons";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -50,11 +52,31 @@ function setTheme(theme) {
 themeToggle.addEventListener("click", () => setTheme(currentTheme() === "dark" ? "light" : "dark"));
 syncThemeUi();
 
+let content = null;
+const isPreview = new URLSearchParams(window.location.search).has("preview");
+
 async function boot() {
-  setProgress(0.1);
+  setProgress(0.05);
+  content = await loadContent();
+  renderSite(content);
+  enhance();
+  setProgress(0.15);
+
+  // Admin live preview keeps its scroll position between reloads
+  if (isPreview) {
+    try {
+      const y = Number(sessionStorage.getItem("sky-preview-scroll") || 0);
+      if (y) window.scrollTo(0, y);
+      window.addEventListener("beforeunload", () => sessionStorage.setItem("sky-preview-scroll", String(window.scrollY)));
+      window.addEventListener("storage", (e) => e.key === PREVIEW_KEY && window.location.reload());
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
   try {
     const { initScene } = await import("./scene.js");
-    sceneApi = initScene(document.getElementById("webgl"), { onProgress: setProgress });
+    sceneApi = initScene(document.getElementById("webgl"), { onProgress: setProgress, site: content.site });
   } catch (err) {
     console.warn("WebGL unavailable, using fallback background.", err);
     document.body.classList.add("no-webgl");
@@ -240,13 +262,6 @@ function setupPointer() {
   });
 }
 
-/* ---------------- Marketplace logos ---------------- */
-document.querySelectorAll(".platform__badge[data-brand]").forEach((el) => {
-  el.appendChild(brandIcon(el.dataset.brand));
-});
-
-/* ---------------- Accent colours ---------------- */
-document.querySelectorAll("[data-accent]").forEach((el) => el.style.setProperty("--accent", el.dataset.accent));
 
 /* ---------------- Contact form ---------------- */
 function setupForm() {
@@ -268,7 +283,7 @@ function setupForm() {
     const data = new FormData(form);
     const subject = `New enquiry: ${data.get("service")} — ${data.get("name")}`;
     const body = `Name: ${data.get("name")}\nEmail: ${data.get("email")}\nService: ${data.get("service")}\n\n${data.get("message")}`;
-    window.location.href = `mailto:hello@skyitempire.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${content.site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     status.classList.remove("is-error");
     status.textContent = "Opening your email app. We'll reply within 24 hours.";
     form.reset();
@@ -278,52 +293,62 @@ function setupForm() {
   );
 }
 
-/* ---------------- Testimonials: duplicate tracks for a seamless loop ---------------- */
-document.querySelectorAll(".reviews__track").forEach((track) => {
-  [...track.children].forEach((card) => {
-    const clone = card.cloneNode(true);
-    clone.setAttribute("aria-hidden", "true");
-    track.appendChild(clone);
-  });
-});
-
-/* ---------------- Footer social icons ---------------- */
+/* ---------------- DOM enhancements after rendering ---------------- */
 const SOCIAL = { facebook: siFacebook, instagram: siInstagram, tiktok: siTiktok, youtube: siYoutube, x: siX, whatsapp: siWhatsapp };
-document.querySelectorAll("[data-social]").forEach((a) => {
-  const icon = SOCIAL[a.dataset.social];
-  if (icon) a.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icon.path}" fill="currentColor"/></svg>`;
-});
 
-/* ---------------- Package buttons preselect the service ---------------- */
-document.querySelectorAll("[data-plan]").forEach((btn) =>
-  btn.addEventListener("click", () => {
-    const select = document.getElementById("serviceSelect");
-    const opt = [...select.options].find((o) => o.text === btn.dataset.plan);
-    if (opt) select.value = opt.value || opt.text;
-  })
-);
+function enhance() {
+  // Marketplace logos
+  document.querySelectorAll(".platform__badge[data-brand]").forEach((el) => {
+    if (el.dataset.brand) el.appendChild(brandIcon(el.dataset.brand));
+  });
 
-/* ---------------- Newsletter ---------------- */
-const newsletter = document.getElementById("newsletter");
-newsletter.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const status = document.getElementById("newsletterStatus");
-  const input = newsletter.querySelector("input");
-  if (!input.checkValidity() || !input.value) {
-    status.textContent = "Please enter a valid email address.";
-    return;
-  }
-  const subject = "Newsletter subscription";
-  const body = `Please add ${input.value} to the SkyITEmpire newsletter.`;
-  window.location.href = `mailto:hello@skyitempire.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  status.textContent = "Welcome to the Empire! 👑";
-  newsletter.reset();
-});
+  // Testimonials: duplicate tracks for a seamless loop
+  document.querySelectorAll(".reviews__track").forEach((track) => {
+    [...track.children].forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute("aria-hidden", "true");
+      track.appendChild(clone);
+    });
+  });
 
-document.getElementById("year").textContent = new Date().getFullYear();
+  // Footer social icons
+  document.querySelectorAll("[data-social]").forEach((a) => {
+    const icon = SOCIAL[a.dataset.social];
+    if (icon) a.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icon.path}" fill="currentColor"/></svg>`;
+  });
 
-setupNav();
-setupPointer();
-setupReveals();
-setupForm();
+  // Package buttons preselect the matching service in the contact form
+  document.querySelectorAll("[data-plan]").forEach((btn) =>
+    btn.addEventListener("click", () => {
+      const select = document.getElementById("serviceSelect");
+      if (!select) return;
+      const name = btn.dataset.plan.toLowerCase();
+      const opt = [...select.options].find((o) => o.text.toLowerCase().includes(name));
+      if (opt) select.value = opt.value || opt.text;
+    })
+  );
+
+  // Newsletter
+  const newsletter = document.getElementById("newsletter");
+  newsletter?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const status = document.getElementById("newsletterStatus");
+    const input = newsletter.querySelector("input");
+    if (!input.checkValidity() || !input.value) {
+      status.textContent = "Please enter a valid email address.";
+      return;
+    }
+    const subject = "Newsletter subscription";
+    const body = `Please add ${input.value} to the newsletter.`;
+    window.location.href = `mailto:${content.site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    status.textContent = "Welcome to the Empire! 👑";
+    newsletter.reset();
+  });
+
+  setupNav();
+  setupPointer();
+  setupReveals();
+  if (document.getElementById("contactForm")) setupForm();
+}
+
 boot();
