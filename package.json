@@ -1,0 +1,19 @@
+{
+  "name": "skyitempire",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SkyITEmpire — software house website: e-commerce marketplace services, digital marketing and web development.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "three": "^0.169.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

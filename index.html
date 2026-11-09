@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyITEmpire | E-commerce, Digital Marketing &amp; Web Development</title>
+    <meta
+      name="description"
+      content="SkyITEmpire is a software house for e-commerce growth: Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook Shop management, digital marketing and custom web development."
+    />
+    <meta name="theme-color" content="#05060f" />
+    <meta property="og:title" content="SkyITEmpire | Build your empire in the digital sky" />
+    <meta
+      property="og:description"
+      content="Marketplace management, performance marketing and high-end web development under one roof."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loader -->
+    <div class="loader" id="loader" aria-hidden="true">
+      <div class="loader__mark">
+        <svg viewBox="0 0 64 64"><use href="#logo-mark" /></svg>
+      </div>
+      <div class="loader__bar"><span id="loaderBar"></span></div>
+      <p class="loader__text">Launching your empire…</p>
+    </div>
+
+    <!-- SVG sprite -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#22d3ee" />
+          <stop offset=".55" stop-color="#3b82f6" />
+          <stop offset="1" stop-color="#a855f7" />
+        </linearGradient>
+        <symbol id="logo-mark" viewBox="0 0 64 64">
+          <path d="M12 44 L16 22 L25 32 L32 16 L39 32 L48 22 L52 44 Z" fill="url(#brandGrad)" />
+          <rect x="12" y="47" width="40" height="5" rx="2.5" fill="url(#brandGrad)" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <canvas id="webgl" aria-hidden="true"></canvas>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <header class="nav" id="nav">
+      <a href="#top" class="brand" aria-label="SkyITEmpire home">
+        <svg class="brand__mark" viewBox="0 0 64 64"><use href="#logo-mark" /></svg>
+        <span class="brand__name">Sky<span class="grad">IT</span>Empire</span>
+      </a>
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#marketplaces">Marketplaces</a>
+        <a href="#marketing">Marketing</a>
+        <a href="#webdev">Web Dev</a>
+        <a href="#process">Process</a>
+        <a href="#contact" class="btn btn--sm btn--primary magnetic">Get a Free Audit</a>
+      </nav>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero" id="hero" data-planet="2.9,0,1" data-planet-m="0,2.2,0.55">
+        <div class="hero__content">
+          <p class="eyebrow reveal-hero"><span class="dot"></span> Software House · E-commerce · Growth</p>
+          <h1 class="hero__title">
+            <span class="line"><span class="reveal-hero">Build your</span></span>
+            <span class="line"><span class="reveal-hero grad">empire</span></span>
+            <span class="line"><span class="reveal-hero">in the digital sky.</span></span>
+          </h1>
+          <p class="hero__sub reveal-hero">
+            SkyITEmpire launches, manages and scales your brand across Amazon, eBay, Etsy, Temu,
+            TikTok Shop and Facebook Shop, and backs it with performance marketing and
+            high-end websites that turn visitors into buyers.
+          </p>
+          <div class="hero__cta reveal-hero">
+            <a href="#contact" class="btn btn--primary btn--lg magnetic">Start Your Project <span class="arrow">→</span></a>
+            <a href="#services" class="btn btn--ghost btn--lg magnetic">Explore Services</a>
+          </div>
+          <ul class="hero__badges reveal-hero">
+            <li><strong>6</strong> marketplaces</li>
+            <li><strong>3</strong> core services</li>
+            <li><strong>24/7</strong> support</li>
+          </ul>
+        </div>
+        <a href="#services" class="scroll-hint" aria-label="Scroll down">
+          <span class="scroll-hint__mouse"><span></span></span>
+          <span>Scroll</span>
+        </a>
+      </section>
+
+      <!-- MARQUEE -->
+      <div class="marquee" aria-label="Platforms we work with">
+        <div class="marquee__track">
+          <span>Amazon</span><i>✦</i><span>eBay</span><i>✦</i><span>Etsy</span><i>✦</i><span>Temu</span><i>✦</i>
+          <span>TikTok Shop</span><i>✦</i><span>Facebook Shop</span><i>✦</i><span>Digital Marketing</span><i>✦</i>
+          <span>Web Development</span><i>✦</i>
+          <span>Amazon</span><i>✦</i><span>eBay</span><i>✦</i><span>Etsy</span><i>✦</i><span>Temu</span><i>✦</i>
+          <span>TikTok Shop</span><i>✦</i><span>Facebook Shop</span><i>✦</i><span>Digital Marketing</span><i>✦</i>
+          <span>Web Development</span><i>✦</i>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <section class="section" id="services" data-planet="-3.4,0.6,0.7" data-planet-m="0,0.5,0.6">
+        <div class="section__head">
+          <p class="eyebrow reveal"><span class="dot"></span> What we do</p>
+          <h2 class="section__title reveal">Three engines. <span class="grad">One empire.</span></h2>
+          <p class="section__lead reveal">
+            We bring marketplace operations, marketing and engineering together so your brand
+            grows on every channel at once.
+          </p>
+        </div>
+
+        <div class="services">
+          <article class="service-card tilt reveal" data-accent="#22d3ee">
+            <div class="service-card__glow"></div>
+            <div class="service-card__icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8h5l5 22h20l5-15H14" /><circle cx="19" cy="38" r="3" /><circle cx="34" cy="38" r="3" />
+              </svg>
+            </div>
+            <span class="service-card__num">01</span>
+            <h3>E-commerce Services</h3>
+            <p>Full-service account management on the world's biggest marketplaces, from setup and listings to fulfilment and scaling.</p>
+            <ul>
+              <li>Store setup &amp; brand registry</li>
+              <li>Product research &amp; sourcing</li>
+              <li>SEO listings &amp; A+ content</li>
+              <li>PPC &amp; marketplace ads</li>
+              <li>Inventory, orders &amp; account health</li>
+            </ul>
+            <a href="#marketplaces" class="link">See marketplaces →</a>
+          </article>
+
+          <article class="service-card tilt reveal" data-accent="#a855f7">
+            <div class="service-card__glow"></div>
+            <div class="service-card__icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 38 18 24l8 8 16-18" /><path d="M32 14h10v10" />
+              </svg>
+            </div>
+            <span class="service-card__num">02</span>
+            <h3>Digital Marketing</h3>
+            <p>Data-driven campaigns that bring in traffic, leads and sales, measured against real revenue.</p>
+            <ul>
+              <li>Social media marketing</li>
+              <li>Meta, Google &amp; TikTok ads</li>
+              <li>SEO &amp; content strategy</li>
+              <li>Influencer &amp; UGC campaigns</li>
+              <li>Email automation &amp; analytics</li>
+            </ul>
+            <a href="#marketing" class="link">See marketing →</a>
+          </article>
+
+          <article class="service-card tilt reveal" data-accent="#3b82f6">
+            <div class="service-card__glow"></div>
+            <div class="service-card__icon">
+              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="9" width="38" height="30" rx="4" /><path d="M5 17h38" /><path d="m19 25-4 4 4 4M29 25l4 4-4 4" />
+              </svg>
+            </div>
+            <span class="service-card__num">03</span>
+            <h3>Web Development</h3>
+            <p>Fast, beautiful, conversion-focused websites and web apps, including 3D and animated experiences like this one.</p>
+            <ul>
+              <li>Business &amp; corporate websites</li>
+              <li>Shopify &amp; WooCommerce stores</li>
+              <li>Custom web apps &amp; dashboards</li>
+              <li>3D, WebGL &amp; motion design</li>
+              <li>Maintenance, hosting &amp; speed</li>
+            </ul>
+            <a href="#webdev" class="link">See web dev →</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- MARKETPLACES -->
+      <section class="section" id="marketplaces" data-planet="3.4,0.4,0.7" data-planet-m="0,-0.5,0.6">
+        <div class="section__head">
+          <p class="eyebrow reveal"><span class="dot"></span> E-commerce services</p>
+          <h2 class="section__title reveal">Every marketplace. <span class="grad">Fully managed.</span></h2>
+          <p class="section__lead reveal">
+            Our specialists run each channel end to end, so you get more sales without the daily operations work.
+          </p>
+        </div>
+
+        <div class="platforms">
+          <article class="platform tilt reveal" style="--c: #ff9900">
+            <div class="platform__top">
+              <span class="platform__badge">A</span>
+              <h3>Amazon</h3>
+            </div>
+            <p>FBA &amp; FBM, Brand Registry, A+ content, PPC campaigns, listing hijack protection and account health.</p>
+            <div class="chips"><span>FBA</span><span>PPC</span><span>A+ Content</span><span>Brand Registry</span></div>
+          </article>
+
+          <article class="platform tilt reveal" style="--c: #3665f3">
+            <div class="platform__top">
+              <span class="platform__badge">e</span>
+              <h3>eBay</h3>
+            </div>
+            <p>Store setup, Cassini-optimised listings, promoted listings, pricing strategy and top-rated seller growth.</p>
+            <div class="chips"><span>Store Setup</span><span>Promoted Listings</span><span>SEO</span></div>
+          </article>
+
+          <article class="platform tilt reveal" style="--c: #f1641e">
+            <div class="platform__top">
+              <span class="platform__badge">E</span>
+              <h3>Etsy</h3>
+            </div>
+            <p>Shop branding, keyword-rich listings, Etsy Ads, print-on-demand integration and review management.</p>
+            <div class="chips"><span>Shop Branding</span><span>Etsy Ads</span><span>POD</span></div>
+          </article>
+
+          <article class="platform tilt reveal" style="--c: #fb7701">
+            <div class="platform__top">
+              <span class="platform__badge">T</span>
+              <h3>Temu</h3>
+            </div>
+            <p>Seller onboarding, catalogue upload, competitive pricing, logistics coordination and order management.</p>
+            <div class="chips"><span>Onboarding</span><span>Catalogue</span><span>Pricing</span></div>
+          </article>
+
+          <article class="platform tilt reveal" style="--c: #25f4ee">
+            <div class="platform__top">
+              <span class="platform__badge">♪</span>
+              <h3>TikTok Shop</h3>
+            </div>
+            <p>Shop setup, affiliate creator outreach, LIVE shopping, short-video content and GMV Max ads.</p>
+            <div class="chips"><span>Creators</span><span>LIVE</span><span>Video Ads</span></div>
+          </article>
+
+          <article class="platform tilt reveal" style="--c: #1877f2">
+            <div class="platform__top">
+              <span class="platform__badge">f</span>
+              <h3>Facebook Shop</h3>
+            </div>
+            <p>Meta Commerce Manager, Facebook &amp; Instagram Shops, catalogue sync, pixel tracking and retargeting.</p>
+            <div class="chips"><span>Commerce Manager</span><span>Instagram</span><span>Pixel</span></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- MARKETING -->
+      <section class="section split" id="marketing" data-planet="2.7,0,0.85" data-planet-m="0,-1.6,0.6">
+        <div class="split__text">
+          <p class="eyebrow reveal"><span class="dot"></span> Digital marketing</p>
+          <h2 class="section__title reveal">Marketing that <span class="grad">moves revenue</span>, not just likes.</h2>
+          <p class="section__lead reveal">
+            Every campaign starts with your numbers. We plan, create, launch and optimise across
+            the channels where your customers already spend their time.
+          </p>
+          <div class="feature-list">
+            <div class="feature reveal">
+              <span class="feature__icon">◎</span>
+              <div><h4>Performance Ads</h4><p>Meta, Google, TikTok &amp; marketplace PPC, tuned for ROAS.</p></div>
+            </div>
+            <div class="feature reveal">
+              <span class="feature__icon">✺</span>
+              <div><h4>Social Media Management</h4><p>Content calendars, reels, design and community growth.</p></div>
+            </div>
+            <div class="feature reveal">
+              <span class="feature__icon">⌕</span>
+              <div><h4>SEO &amp; Content</h4><p>Technical SEO, keyword strategy and content that ranks.</p></div>
+            </div>
+            <div class="feature reveal">
+              <span class="feature__icon">✉</span>
+              <div><h4>Email &amp; Automation</h4><p>Flows, newsletters and funnels that sell while you sleep.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="split__visual reveal">
+          <div class="dash glass">
+            <div class="dash__head">
+              <span class="dash__dots"><i></i><i></i><i></i></span>
+              <span>Campaign Overview</span>
+            </div>
+            <div class="dash__kpis">
+              <div><small>Reach</small><strong class="kpi-anim">Growing</strong></div>
+              <div><small>CTR</small><strong class="kpi-anim">Optimised</strong></div>
+              <div><small>ROAS</small><strong class="kpi-anim">Tracked</strong></div>
+            </div>
+            <svg class="dash__chart" viewBox="0 0 400 160" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#22d3ee" stop-opacity=".45" />
+                  <stop offset="1" stop-color="#22d3ee" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <path class="chart-area" d="M0 140 C40 130 60 120 90 110 S150 95 180 80 S240 70 270 50 S340 30 400 12 L400 160 L0 160 Z" fill="url(#chartFill)" />
+              <path class="chart-line" d="M0 140 C40 130 60 120 90 110 S150 95 180 80 S240 70 270 50 S340 30 400 12" fill="none" stroke="url(#brandGrad)" stroke-width="3" />
+            </svg>
+            <div class="dash__bars">
+              <span style="--h: 35%"></span><span style="--h: 52%"></span><span style="--h: 44%"></span>
+              <span style="--h: 68%"></span><span style="--h: 60%"></span><span style="--h: 82%"></span>
+              <span style="--h: 74%"></span><span style="--h: 95%"></span>
+            </div>
+            <p class="dash__note">Illustrative dashboard</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- WEB DEV -->
+      <section class="section split split--reverse" id="webdev" data-planet="-2.7,0,0.85" data-planet-m="0,1.6,0.6">
+        <div class="split__visual reveal">
+          <div class="code glass">
+            <div class="dash__head">
+              <span class="dash__dots"><i></i><i></i><i></i></span>
+              <span>skyitempire.dev</span>
+            </div>
+<pre><code><span class="k">const</span> <span class="v">website</span> = <span class="f">build</span>({
+  design:      <span class="s">"ultra-premium"</span>,
+  experience:  [<span class="s">"3D"</span>, <span class="s">"motion"</span>, <span class="s">"responsive"</span>],
+  performance: <span class="s">"lightning-fast"</span>,
+  seo:         <span class="n">true</span>,
+  goal:        <span class="s">"conversions"</span>,
+});
+
+<span class="v">website</span>.<span class="f">launch</span>(); <span class="c">// 🚀 your empire is live</span><span class="caret"></span></code></pre>
+          </div>
+        </div>
+        <div class="split__text">
+          <p class="eyebrow reveal"><span class="dot"></span> Web development</p>
+          <h2 class="section__title reveal">Websites engineered to <span class="grad">impress &amp; convert.</span></h2>
+          <p class="section__lead reveal">
+            From sleek business sites to full e-commerce stores and custom web apps, we design and
+            build digital products that look world-class and perform even better.
+          </p>
+          <div class="stack reveal">
+            <span>React</span><span>Next.js</span><span>Three.js</span><span>Node.js</span>
+            <span>Shopify</span><span>WordPress</span><span>WooCommerce</span><span>Laravel</span>
+            <span>Tailwind</span><span>Supabase</span>
+          </div>
+          <a href="#contact" class="btn btn--primary magnetic reveal">Build my website <span class="arrow">→</span></a>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
+      <section class="section" id="process" data-planet="0,1.9,0.6" data-planet-m="0,0,0.6">
+        <div class="section__head">
+          <p class="eyebrow reveal"><span class="dot"></span> How we work</p>
+          <h2 class="section__title reveal">From idea to <span class="grad">empire</span> in four steps.</h2>
+        </div>
+        <ol class="process">
+          <li class="step reveal">
+            <span class="step__num">01</span>
+            <h3>Discover</h3>
+            <p>A free audit of your brand, products, competitors and current channels.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">02</span>
+            <h3>Strategise</h3>
+            <p>A clear roadmap with channels, budgets, timelines and measurable goals.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">03</span>
+            <h3>Launch</h3>
+            <p>We set up stores, campaigns and websites, built properly from day one.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">04</span>
+            <h3>Scale</h3>
+            <p>Continuous optimisation and transparent reporting as your revenue grows.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- WHY US -->
+      <section class="section" id="why">
+        <div class="why glass reveal">
+          <div class="why__item">
+            <strong><span class="counter" data-to="6">0</span>+</strong>
+            <span>Marketplaces managed</span>
+          </div>
+          <div class="why__item">
+            <strong><span class="counter" data-to="3">0</span></strong>
+            <span>Integrated service lines</span>
+          </div>
+          <div class="why__item">
+            <strong><span class="counter" data-to="24">0</span>/7</strong>
+            <span>Support &amp; monitoring</span>
+          </div>
+          <div class="why__item">
+            <strong><span class="counter" data-to="100">0</span>%</strong>
+            <span>Transparent reporting</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section" id="contact" data-planet="0,-0.4,1.2" data-planet-m="0,0,0.8">
+        <div class="contact glass">
+          <div class="contact__text">
+            <p class="eyebrow reveal"><span class="dot"></span> Let's talk</p>
+            <h2 class="section__title reveal">Ready to build <span class="grad">your empire?</span></h2>
+            <p class="section__lead reveal">
+              Tell us about your business and we'll come back with a free growth plan within 24 hours.
+            </p>
+            <ul class="contact__info reveal">
+              <li><span>✉</span><a href="mailto:hello@skyitempire.com">hello@skyitempire.com</a></li>
+              <li><span>◷</span>Mon – Sat · Fast response</li>
+              <li><span>⌖</span>Serving clients worldwide</li>
+            </ul>
+          </div>
+          <form class="form reveal" id="contactForm" novalidate>
+            <div class="form__row">
+              <label class="field">
+                <input type="text" name="name" required placeholder=" " autocomplete="name" />
+                <span>Your name</span>
+              </label>
+              <label class="field">
+                <input type="email" name="email" required placeholder=" " autocomplete="email" />
+                <span>Email address</span>
+              </label>
+            </div>
+            <label class="field">
+              <select name="service" required>
+                <option value="" disabled selected hidden></option>
+                <option>Amazon Management</option>
+                <option>eBay Management</option>
+                <option>Etsy Management</option>
+                <option>Temu Management</option>
+                <option>TikTok Shop Management</option>
+                <option>Facebook Shop Management</option>
+                <option>Digital Marketing</option>
+                <option>Web Development</option>
+                <option>Not sure yet: advise me</option>
+              </select>
+              <span>Service you need</span>
+            </label>
+            <label class="field">
+              <textarea name="message" rows="4" required placeholder=" "></textarea>
+              <span>Tell us about your project</span>
+            </label>
+            <button type="submit" class="btn btn--primary btn--lg btn--block magnetic">
+              Send Message <span class="arrow">→</span>
+            </button>
+            <p class="form__status" id="formStatus" role="status"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <a href="#top" class="brand">
+          <svg class="brand__mark" viewBox="0 0 64 64"><use href="#logo-mark" /></svg>
+          <span class="brand__name">Sky<span class="grad">IT</span>Empire</span>
+        </a>
+        <nav class="footer__links" aria-label="Footer">
+          <a href="#services">Services</a>
+          <a href="#marketplaces">Marketplaces</a>
+          <a href="#marketing">Marketing</a>
+          <a href="#webdev">Web Development</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <p class="footer__copy">© <span id="year"></span> SkyITEmpire. All rights reserved.</p>
+      </div>
+      <p class="footer__note">
+        Amazon, eBay, Etsy, Temu, TikTok Shop and Facebook Shop are trademarks of their respective owners.
+      </p>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
