@@ -1560,13 +1560,15 @@ main,
   font-size: 13px;
 }
 
-/* eBay's mark is a wide wordmark: give it more room */
-.brand-icon[data-brand="ebay"] svg {
+/* eBay and Temu marks are wide wordmarks: give them more room */
+.brand-icon[data-brand="ebay"] svg,
+.brand-icon[data-brand="temu"] svg {
   width: 40px;
   height: 40px;
 }
 
-.orb-label__icon[data-brand="ebay"] svg {
+.orb-label__icon[data-brand="ebay"] svg,
+.orb-label__icon[data-brand="temu"] svg {
   width: 19px;
   height: 19px;
 }
