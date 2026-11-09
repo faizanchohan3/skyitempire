@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { CSS2DRenderer, CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer.js";
@@ -37,6 +38,9 @@ const NOISE = /* glsl */ `
     return v;
   }
 `;
+
+// Shared theme uniform: 0 = light, 1 = dark (animated between the two)
+const uDark = { value: 0 };
 
 /* ------------------------------------------------------------------ */
 /* Planet                                                               */
@@ -122,7 +126,9 @@ function createAtmosphere(radius) {
         gl_Position = projectionMatrix * mv;
       }
     `,
+    uniforms: { uDark },
     fragmentShader: /* glsl */ `
+      uniform float uDark;
       varying vec3 vNormal;
       varying vec3 vView;
       void main() {
@@ -130,7 +136,7 @@ function createAtmosphere(radius) {
         float d = -dot(vNormal, vView);
         float i = pow(clamp(d / 0.55, 0.0, 1.0), 3.0);
         vec3 col = mix(vec3(0.15, 0.55, 1.0), vec3(0.55, 0.3, 1.0), 0.3);
-        gl_FragColor = vec4(col, i * 0.55);
+        gl_FragColor = vec4(col * mix(1.0, 0.9, uDark), i * mix(0.55, 1.0, uDark));
       }
     `,
     side: THREE.BackSide,
@@ -145,7 +151,7 @@ function createAtmosphere(radius) {
 /* Rings                                                                */
 /* ------------------------------------------------------------------ */
 function createRing(inner, outer) {
-  const uniforms = { uTime: { value: 0 }, uInner: { value: inner }, uOuter: { value: outer } };
+  const uniforms = { uTime: { value: 0 }, uInner: { value: inner }, uOuter: { value: outer }, uDark };
   const material = new THREE.ShaderMaterial({
     uniforms,
     vertexShader: /* glsl */ `
@@ -159,6 +165,7 @@ function createRing(inner, outer) {
       uniform float uTime;
       uniform float uInner;
       uniform float uOuter;
+      uniform float uDark;
       varying vec3 vPos;
       float h1(float x) { return fract(sin(x * 127.1) * 43758.5453); }
       void main() {
@@ -168,8 +175,9 @@ function createRing(inner, outer) {
         float edge = smoothstep(0.0, 0.08, r) * smoothstep(1.0, 0.75, r);
         float gap = 1.0 - smoothstep(0.42, 0.44, r) * smoothstep(0.50, 0.48, r);
         float a = edge * gap * (0.12 + 0.55 * band) * fine;
-        vec3 col = mix(vec3(0.02, 0.45, 0.75), vec3(0.42, 0.15, 0.85), r);
-        gl_FragColor = vec4(col, a * 0.9);
+        vec3 light = mix(vec3(0.02, 0.45, 0.75), vec3(0.42, 0.15, 0.85), r);
+        vec3 dark = mix(vec3(0.15, 0.8, 1.0), vec3(0.65, 0.35, 1.0), r);
+        gl_FragColor = vec4(mix(light, dark, uDark), a * mix(0.9, 0.6, uDark));
       }
     `,
     side: THREE.DoubleSide,
@@ -184,8 +192,11 @@ function createDust(count, inner, outer) {
   const geo = new THREE.BufferGeometry();
   const pos = new Float32Array(count * 3);
   const col = new Float32Array(count * 3);
+  const colDark = new Float32Array(count * 3);
   const a = new THREE.Color("#0891b2");
   const b = new THREE.Color("#7c3aed");
+  const ad = new THREE.Color("#22d3ee");
+  const bd = new THREE.Color("#a855f7");
   const tmp = new THREE.Color();
   for (let i = 0; i < count; i++) {
     const r = inner + Math.pow(Math.random(), 0.7) * (outer - inner);
@@ -193,8 +204,11 @@ function createDust(count, inner, outer) {
     pos[i * 3] = Math.cos(t) * r;
     pos[i * 3 + 1] = Math.sin(t) * r;
     pos[i * 3 + 2] = (Math.random() - 0.5) * 0.12;
-    tmp.copy(a).lerp(b, (r - inner) / (outer - inner));
+    const k = (r - inner) / (outer - inner);
+    tmp.copy(a).lerp(b, k);
     col.set([tmp.r, tmp.g, tmp.b], i * 3);
+    tmp.copy(ad).lerp(bd, k);
+    colDark.set([tmp.r, tmp.g, tmp.b], i * 3);
   }
   geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
   geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
@@ -205,7 +219,9 @@ function createDust(count, inner, outer) {
     opacity: 0.75,
     depthWrite: false,
   });
-  return new THREE.Points(geo, mat);
+  const points = new THREE.Points(geo, mat);
+  points.userData.colors = { light: col, dark: colDark };
+  return points;
 }
 
 /* ------------------------------------------------------------------ */
@@ -236,7 +252,7 @@ function createStars(count) {
   geo.setAttribute("aSeed", new THREE.BufferAttribute(seed, 1));
   geo.setAttribute("aColor", new THREE.BufferAttribute(color, 3));
 
-  const uniforms = { uTime: { value: 0 }, uPixelRatio: { value: 1 } };
+  const uniforms = { uTime: { value: 0 }, uPixelRatio: { value: 1 }, uDark };
   const mat = new THREE.ShaderMaterial({
     uniforms,
     vertexShader: /* glsl */ `
@@ -256,6 +272,7 @@ function createStars(count) {
       }
     `,
     fragmentShader: /* glsl */ `
+      uniform float uDark;
       varying vec3 vColor;
       varying float vTw;
       void main() {
@@ -263,7 +280,8 @@ function createStars(count) {
         float d = length(c);
         float core = smoothstep(0.5, 0.0, d);
         float glow = pow(core, 3.0);
-        gl_FragColor = vec4(vColor, glow * vTw * 0.55);
+        vec3 darkCol = mix(vColor, vec3(0.9, 0.95, 1.0), 0.6) * (glow * 1.2 + core * 0.25) * vTw;
+        gl_FragColor = mix(vec4(vColor, glow * vTw * 0.55), vec4(darkCol, core * vTw), uDark);
       }
     `,
     transparent: true,
@@ -482,7 +500,8 @@ export function initScene(canvas, { onProgress } = {}) {
   camera.position.set(0, 0, 9);
 
   // Lights for the glass crystals
-  scene.add(new THREE.AmbientLight("#ffffff", 0.9));
+  const ambient = new THREE.AmbientLight("#ffffff", 0.9);
+  scene.add(ambient);
   const key = new THREE.DirectionalLight("#ffffff", 2.4);
   key.position.set(5, 3, 6);
   scene.add(key);
@@ -503,7 +522,8 @@ export function initScene(canvas, { onProgress } = {}) {
 
   const planet = createPlanet(1.4);
   system.add(planet.mesh);
-  system.add(createAtmosphere(1.65));
+  const atmosphere = createAtmosphere(1.65);
+  system.add(atmosphere);
 
   const shell = new THREE.LineSegments(
     new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.95, 2)),
@@ -539,7 +559,40 @@ export function initScene(canvas, { onProgress } = {}) {
   // Post-processing
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.55, 0.5, 0.55);
+  composer.addPass(bloom);
   composer.addPass(new OutputPass());
+
+  /* ---------- Theme switching ---------- */
+  const THEMES = {
+    light: { bg: new THREE.Color("#f6f8fd"), ambient: 0.9 },
+    dark: { bg: new THREE.Color("#05060f"), ambient: 0.35 },
+  };
+  const bgColor = new THREE.Color();
+  let themeTarget = 0;
+  const additive = [ring.material, stars.points.material, dust.material];
+  const atmoMat = atmosphere.material;
+  function applyBlending(dark) {
+    for (const m of additive) {
+      m.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+      m.needsUpdate = true;
+    }
+    atmoMat.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+    atmoMat.needsUpdate = true;
+    dust.geometry.attributes.color.array.set(dust.userData.colors[dark ? "dark" : "light"]);
+    dust.geometry.attributes.color.needsUpdate = true;
+    dust.material.opacity = dark ? 0.9 : 0.75;
+    bloom.enabled = dark;
+    renderer.toneMapping = dark ? THREE.ACESFilmicToneMapping : THREE.NoToneMapping;
+    renderer.toneMappingExposure = dark ? 0.95 : 1;
+    ambient.intensity = dark ? THEMES.dark.ambient : THEMES.light.ambient;
+  }
+  function setTheme(theme, instant = false) {
+    const dark = theme === "dark";
+    themeTarget = dark ? 1 : 0;
+    applyBlending(dark);
+    if (instant) uDark.value = themeTarget;
+  }
 
   function resize() {
     const w = window.innerWidth;
@@ -628,6 +681,13 @@ export function initScene(canvas, { onProgress } = {}) {
     const t = elapsed;
 
     planet.uniforms.uTime.value = t;
+
+    // Ease between themes
+    uDark.value += (themeTarget - uDark.value) * Math.min(1, dt * 10 + 0.08);
+    if (Math.abs(themeTarget - uDark.value) < 0.002) uDark.value = themeTarget;
+    bgColor.copy(THEMES.light.bg).lerp(THEMES.dark.bg, uDark.value);
+    renderer.setClearColor(bgColor, 1);
+    scene.fog.color.copy(bgColor);
     stars.uniforms.uTime.value = t;
 
     // World placement from scroll
@@ -688,10 +748,13 @@ export function initScene(canvas, { onProgress } = {}) {
     }
   });
 
+  setTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light", true);
+
   // Warm up shaders before the loader disappears
   renderer.compile(scene, camera);
   onProgress?.(0.9);
   composer.render();
   onProgress?.(1);
   requestAnimationFrame(frame);
+  return { setTheme };
 }

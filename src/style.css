@@ -19,6 +19,13 @@
   --gold: #e3a21a;
   --gold-grad: linear-gradient(120deg, #fde68a 0%, #f5b942 45%, #d48806 100%);
   --navy: #070b1f;
+  --surface: #ffffff;
+  --edge: rgba(255, 255, 255, 0.9);
+  --chrome: rgba(255, 255, 255, 0.78);
+  --inset: #ffffff;
+  --stroke-text: rgba(11, 18, 48, 0.35);
+  --stroke-faint: rgba(11, 18, 48, 0.12);
+  --accent-text: #2563eb;
   --radius: 22px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-head: "Space Grotesk", system-ui, sans-serif;
@@ -251,14 +258,14 @@ main,
 
 .btn--ghost {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--chrome);
   border-color: var(--line-strong);
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 24px -14px rgba(30, 41, 110, 0.3);
 }
 
 .btn--ghost:hover {
-  background: #fff;
+  background: var(--surface);
   border-color: rgba(37, 99, 235, 0.4);
 }
 
@@ -300,7 +307,7 @@ main,
 }
 
 .nav.is-scrolled {
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--chrome);
   border-color: var(--line);
   backdrop-filter: blur(18px) saturate(1.6);
   -webkit-backdrop-filter: blur(18px) saturate(1.6);
@@ -369,7 +376,7 @@ main,
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--chrome);
   cursor: pointer;
   position: relative;
 }
@@ -434,13 +441,13 @@ main,
   padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--chrome);
   backdrop-filter: blur(10px);
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--accent-text);
   margin-bottom: 22px;
 }
 
@@ -473,16 +480,16 @@ main,
 
 .glass {
   background: var(--glass);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   border-radius: var(--radius);
-  box-shadow: var(--shadow), inset 0 1px 0 #fff;
+  box-shadow: var(--shadow), inset 0 1px 0 var(--inset);
 }
 
 .card {
   background: var(--glass);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   border-radius: var(--radius);
@@ -573,7 +580,7 @@ main,
 .scroll-hint__mouse {
   width: 24px;
   height: 38px;
-  border: 1.5px solid rgba(11, 18, 48, 0.3);
+  border: 1.5px solid var(--stroke-text);
   border-radius: 14px;
   position: relative;
 }
@@ -608,7 +615,7 @@ main,
   overflow: hidden;
   padding: 26px 0;
   border-block: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--chrome);
   backdrop-filter: blur(12px);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
@@ -628,7 +635,7 @@ main,
 
 .marquee__track span {
   color: transparent;
-  -webkit-text-stroke: 1.2px rgba(11, 18, 48, 0.35);
+  -webkit-text-stroke: 1.2px var(--stroke-text);
   transition: color 0.3s;
 }
 
@@ -668,7 +675,7 @@ main,
   padding: 36px 30px 30px;
   border-radius: var(--radius);
   background: var(--glass);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   box-shadow: var(--shadow);
@@ -718,7 +725,7 @@ main,
   font-weight: 700;
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(11, 18, 48, 0.12);
+  -webkit-text-stroke: 1px var(--stroke-faint);
 }
 
 .service-card h3 {
@@ -779,7 +786,7 @@ main,
   padding: 28px;
   border-radius: var(--radius);
   background: var(--glass);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   box-shadow: var(--shadow);
@@ -852,8 +859,8 @@ main,
   font-weight: 500;
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
-  background: color-mix(in srgb, var(--c) 8%, #fff);
-  color: color-mix(in srgb, var(--c) 55%, #0b1230);
+  background: color-mix(in srgb, var(--c) 10%, var(--surface));
+  color: color-mix(in srgb, var(--c) 45%, var(--text));
 }
 
 /* ---------- Split sections ---------- */
@@ -880,7 +887,7 @@ main,
   gap: 14px;
   padding: 18px;
   border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   background: var(--glass);
   backdrop-filter: blur(16px);
   box-shadow: 0 12px 30px -20px rgba(30, 41, 110, 0.3);
@@ -980,7 +987,7 @@ main,
 .dash__kpis div {
   padding: 14px;
   border-radius: 14px;
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--line);
 }
 
@@ -1083,7 +1090,7 @@ main,
   padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid var(--line-strong);
-  background: #fff;
+  background: var(--surface);
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0 6px 16px -12px rgba(30, 41, 110, 0.4);
@@ -1109,7 +1116,7 @@ main,
   padding: 32px;
   border-radius: var(--radius);
   background: var(--glass);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   box-shadow: var(--shadow);
@@ -1153,7 +1160,7 @@ main,
   height: 54px;
   font-size: 26px;
   border-radius: 16px;
-  background: #fff;
+  background: var(--surface);
   box-shadow: 0 10px 24px -12px rgba(30, 41, 110, 0.4);
 }
 
@@ -1276,7 +1283,7 @@ main,
   padding: 36px 30px 30px;
   border-radius: 26px;
   background: var(--glass-strong);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
   box-shadow: var(--shadow);
@@ -1420,7 +1427,7 @@ main,
   padding: 28px;
   border-radius: var(--radius);
   background: var(--glass-strong);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow);
@@ -1498,7 +1505,7 @@ main,
 .faq__item {
   border-radius: 18px;
   background: var(--glass-strong);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--edge);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 14px 34px -24px rgba(30, 41, 110, 0.35);
@@ -1614,7 +1621,7 @@ main,
   padding: 24px 18px 10px;
   border-radius: 14px;
   border: 1px solid var(--line-strong);
-  background: #fff;
+  background: var(--surface);
   color: var(--text);
   font: inherit;
   font-size: 15px;
@@ -2005,7 +2012,7 @@ main,
   letter-spacing: 0.02em;
   white-space: nowrap;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--chrome);
   border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
   box-shadow: 0 10px 24px -10px color-mix(in srgb, var(--c) 70%, transparent);
   backdrop-filter: blur(8px);
@@ -2124,7 +2131,7 @@ main,
     gap: 6px;
     padding: 18px;
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.97);
+    background: var(--chrome);
     border: 1px solid var(--line);
     box-shadow: var(--shadow-lg);
     font-size: 17px;
@@ -2317,5 +2324,160 @@ main,
 
   .dash__kpis div {
     padding: 10px;
+  }
+}
+
+/* =====================================================================
+   Dark theme
+   ===================================================================== */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #05060f;
+  --bg-2: #0a0c1d;
+  --text: #e8ecff;
+  --muted: #9aa3c7;
+  --line: rgba(148, 163, 255, 0.14);
+  --line-strong: rgba(148, 163, 255, 0.24);
+  --glass: rgba(14, 17, 40, 0.58);
+  --glass-strong: rgba(14, 17, 40, 0.8);
+  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.75);
+  --shadow-lg: 0 40px 100px -30px rgba(59, 130, 246, 0.45);
+  --cyan: #22d3ee;
+  --blue: #3b82f6;
+  --violet: #a855f7;
+  --grad: linear-gradient(120deg, #22d3ee 0%, #3b82f6 50%, #a855f7 100%);
+  --surface: rgba(20, 24, 54, 0.92);
+  --edge: rgba(148, 163, 255, 0.14);
+  --chrome: rgba(10, 12, 30, 0.62);
+  --inset: rgba(255, 255, 255, 0.06);
+  --stroke-text: rgba(232, 236, 255, 0.5);
+  --stroke-faint: rgba(232, 236, 255, 0.12);
+  --accent-text: #7dd3fc;
+}
+
+:root[data-theme="dark"] .nav.is-open {
+  background: rgba(8, 10, 26, 0.9);
+}
+
+:root[data-theme="dark"] .nav__links {
+  background: transparent;
+}
+
+@media (max-width: 860px) {
+  :root[data-theme="dark"] .nav__links {
+    background: rgba(8, 10, 26, 0.96);
+  }
+}
+
+:root[data-theme="dark"] .field select option {
+  background: #0a0c1d;
+  color: #e8ecff;
+}
+
+:root[data-theme="dark"] .dash__kpis em.up,
+:root[data-theme="dark"] .dash__chart-legend b {
+  color: #34d399;
+}
+
+:root[data-theme="dark"] .dash__kpis em.up {
+  background: rgba(52, 211, 153, 0.12);
+}
+
+:root[data-theme="dark"] .text-link {
+  color: #7dd3fc;
+}
+
+:root[data-theme="dark"] .vip-footer {
+  background: radial-gradient(120% 90% at 50% 0%, #121a3d 0%, #080c24 45%, #04050d 100%);
+  border-top: 1px solid rgba(245, 185, 66, 0.18);
+}
+
+:root[data-theme="dark"] .no-webgl {
+  background:
+    radial-gradient(60% 50% at 75% 30%, rgba(59, 130, 246, 0.35), transparent 70%),
+    radial-gradient(50% 40% at 20% 80%, rgba(168, 85, 247, 0.25), transparent 70%),
+    var(--bg);
+}
+
+/* smooth colour change while switching themes */
+.theme-anim,
+.theme-anim *,
+.theme-anim *::before,
+.theme-anim *::after {
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease,
+    fill 0.5s ease !important;
+}
+
+/* ---------- Theme toggle ---------- */
+.nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 18px;
+}
+
+.theme-toggle {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--chrome);
+  color: var(--text);
+  cursor: pointer;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s var(--ease), border-color 0.3s;
+}
+
+.theme-toggle:hover {
+  transform: rotate(-15deg) scale(1.06);
+  border-color: var(--blue);
+}
+
+.theme-toggle svg {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.6s var(--ease), opacity 0.4s;
+}
+
+.theme-toggle .i-sun {
+  color: #f5b942;
+  transform: translateY(30px) rotate(-90deg);
+  opacity: 0;
+}
+
+.theme-toggle .i-moon {
+  color: #4f46e5;
+}
+
+:root[data-theme="dark"] .theme-toggle .i-sun {
+  transform: none;
+  opacity: 1;
+}
+
+:root[data-theme="dark"] .theme-toggle .i-moon {
+  transform: translateY(-30px) rotate(90deg);
+  opacity: 0;
+}
+
+.nav {
+  justify-content: flex-start;
+}
+
+.nav__links {
+  margin-left: auto;
+}
+
+@media (max-width: 860px) {
+  .nav__actions {
+    margin-left: auto;
   }
 }

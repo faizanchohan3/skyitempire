@@ -17,11 +17,44 @@ const loader = document.getElementById("loader");
 const loaderBar = document.getElementById("loaderBar");
 const setProgress = (p) => (loaderBar.style.width = `${Math.round(p * 100)}%`);
 
+/* ---------------- Light / dark theme ---------------- */
+let sceneApi = null;
+const root = document.documentElement;
+const themeToggle = document.getElementById("themeToggle");
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+function currentTheme() {
+  return root.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function syncThemeUi() {
+  const dark = currentTheme() === "dark";
+  themeToggle.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+  themeToggle.setAttribute("aria-pressed", String(dark));
+  themeMeta.setAttribute("content", dark ? "#05060f" : "#f6f8fd");
+}
+
+function setTheme(theme) {
+  root.classList.add("theme-anim");
+  root.dataset.theme = theme;
+  try {
+    localStorage.setItem("sky-theme", theme);
+  } catch (e) {
+    /* storage unavailable: theme still applies for this visit */
+  }
+  sceneApi?.setTheme(theme);
+  syncThemeUi();
+  setTimeout(() => root.classList.remove("theme-anim"), 600);
+}
+
+themeToggle.addEventListener("click", () => setTheme(currentTheme() === "dark" ? "light" : "dark"));
+syncThemeUi();
+
 async function boot() {
   setProgress(0.1);
   try {
     const { initScene } = await import("./scene.js");
-    initScene(document.getElementById("webgl"), { onProgress: setProgress });
+    sceneApi = initScene(document.getElementById("webgl"), { onProgress: setProgress });
   } catch (err) {
     console.warn("WebGL unavailable, using fallback background.", err);
     document.body.classList.add("no-webgl");
